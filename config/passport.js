@@ -40,7 +40,7 @@ module.exports = function (passport) {
   );
 
   passport.use(
-    "local-signin",
+    "local-login",
     {
       usernameField: "email",
       passwordField: "password",
