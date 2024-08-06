@@ -10,6 +10,7 @@ const { healthRouter } = require("./routes/health");
 const { authRouter } = require("./routes/auth.routes");
 const { MONGO_URI } = require("./env");
 const { logger } = require("./middleware/logger");
+const { ensureAuth } = require("./middleware/auth");
 
 const PORT = 8080;
 const app = express();
@@ -40,8 +41,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+app.use((req, res, next) => {
+  res.locals.success_message = req.flash("success_msg");
+  res.locals.error_message = req.flash("error_msg");
+  res.locals.error = req.flash("error");
+  res.locals.author = req.author || null;
+
+  next();
+});
+
 app.use("/health", healthRouter);
-app.use("/blog", blogRouter);
+app.use("/blog", ensureAuth, blogRouter);
 app.use("/auth", authRouter);
 
 app.listen(PORT, () => {
