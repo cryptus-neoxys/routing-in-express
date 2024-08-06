@@ -7,6 +7,7 @@ const passport = require("passport");
 
 const { blogRouter } = require("./routes/blog.route");
 const { healthRouter } = require("./routes/health");
+const { authRouter } = require("./routes/auth.routes");
 const { MONGO_URI } = require("./env");
 const { logger } = require("./middleware/logger");
 
@@ -41,6 +42,7 @@ app.use(flash());
 
 app.use("/health", healthRouter);
 app.use("/blog", blogRouter);
+app.use("/auth", authRouter);
 
 app.listen(PORT, () => {
   console.log(`server running on PORT: ${PORT}`);
